@@ -1,5 +1,5 @@
 """
-ASGI config for stores project.
+ASGI config for distributed_stores project.
 
 It exposes the ASGI callable as a module-level variable named ``application``.
 
@@ -11,6 +11,6 @@ import os
 
 from django.core.asgi import get_asgi_application
 
-os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'stores.settings')
+os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'distributed_stores.settings')
 
 application = get_asgi_application()
