@@ -28,6 +28,9 @@ DEBUG = True
 
 ALLOWED_HOSTS = []
 
+SESSION_COOKIE_HTTPONLY = True
+CSRF_COOKIE_HTTPONLY = True
+
 
 # Application definition
 
@@ -41,6 +44,8 @@ INSTALLED_APPS = [
 
     'products_catalog',
 ]
+
+MESSAGE_STORAGE = 'django.contrib.messages.storage.session.SessionStorage'
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',

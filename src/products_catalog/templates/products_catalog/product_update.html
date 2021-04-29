@@ -1,0 +1,26 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <form method="POST"> {% csrf_token %}
+        {{form.as_p}}
+        <input type="submit" value="save"  name="save_product_info">
+    </form>
+
+    {% if specs %}
+    <ul>
+        {% for spec in specs %}
+          <li>
+            {{ spec.attribute }} {{spec.value}} <a href="specs/{{spec.attribute}}/delete">delete</a>
+          </li>
+        {% endfor %}
+      </ul>
+    {% endif %}  
+    <form method="POST"> {% csrf_token %}
+        {{specsForm.as_p}}
+        <input type="submit" value="add"  name="save_product_specs">
+    </form>      
+{% endblock %}
+
+   
+
+{}

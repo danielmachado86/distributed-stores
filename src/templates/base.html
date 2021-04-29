@@ -1,11 +1,21 @@
 <!DOCTYPE html>
-<html>
+<html lang="es">
     <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
         <title>Tiendas distribuidas</title>
     </head>
     <body>
         <h1>Inicio</h1>
         <p>Desde aqui puedes hacer todas tus compras</p>
+
+        {% if messages %}
+        <ul class="messages">
+            {% for message in messages %}
+            <li  {% if message.tags %} class=" {{ message.tags }} " {% endif %}> {{ message }} </li>
+            {% endfor %}
+        </ul>
+        {% endif %}
 
         {% block content %}
 

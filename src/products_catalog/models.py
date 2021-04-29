@@ -6,7 +6,7 @@ class Brand(models.Model):
     picture = models.URLField(blank=True, null=True)
 
     def __str__(self):
-        return 'Brand: ' + self.name
+        return self.name
 
 
 class Category(models.Model):
@@ -16,7 +16,7 @@ class Category(models.Model):
     picture = models.URLField(blank=True, null=True)
 
     def __str__(self):
-        return 'Category: ' + self.parent + ' ' + self.name
+        return self.name
 
     class Meta:
         unique_together = ('name', 'parent')
@@ -30,7 +30,7 @@ class Product(models.Model):
     picture = models.URLField(blank=True ,null=True)
 
     def __str__(self):
-        return 'Product: ' + self.brand.name + ' ' + self.name
+        return self.brand.name + ' ' + self.name
 
     class Meta:
         unique_together = ('name', 'brand')
@@ -43,7 +43,7 @@ class ProductSpecs(models.Model):
 
 
     def __str__(self):
-        return 'Spec: ' + self.product.name + ' ' + self.attribute
+        return self.product.name + ' ' + self.attribute
 
     class Meta:
-        unique_together = ('attribute', 'value')
+        unique_together = ('product', 'attribute')

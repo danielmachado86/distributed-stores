@@ -3,14 +3,14 @@
 {% block content %}
 {% if object %}
   <ul>
-    {% for product in object %}
+    {% for brand in object %}
       <li>
-        {{ product.id }} {{ product.name }} ({{product.brand.name}})
+        {{ brand.name }}
       </li>
     {% endfor %}
   </ul>
   {% else %}
-    <p>There are no products in the catalog.</p>
+    <p>There are no brands in the catalog.</p>
   {% endif %}
             
 {% endblock %}
