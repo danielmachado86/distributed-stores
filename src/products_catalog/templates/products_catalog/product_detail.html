@@ -1,11 +1,14 @@
 {% extends 'base.html' %}
+{% load static %}
+
+<link rel="stylesheet" type="text/css" href="{% static 'products_catalog/style.css' %}">
 
 {% block content %}
 {% if object %}
   <ul>
     {% for product in object %}
       <li>
-        {{ product.id }} {{ product.name }} ({{product.brand.name}})
+        {{ product.id }} <a href="{{ product.id }}">{{ product.name }}</a> ({{product.brand.name}})
       </li>
     {% endfor %}
   </ul>

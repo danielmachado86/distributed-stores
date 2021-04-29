@@ -70,7 +70,7 @@ def product_spec_delete_view(request, product, attribute):
     obj = get_object_or_404(queryset, attribute=attribute)
     if request.method == 'POST':
         obj.delete()
-        messages.success(request, 'Se eliminó exitosamente el spec: ' + obj.attribute)
+        messages.success(request, 'Se eliminó exitosamente la especificacion: ' + obj.attribute)
         return redirect('../../../')
     context = {
         'object': obj
