@@ -1,10 +1,34 @@
 {% extends 'base.html' %}
 
 {% block content %}
-    <form method="POST"> {% csrf_token %}
-        {{form.as_p}}
-        <input type="submit" value="save"  name="save_product_info">
-    </form>
+    {% if form %}
+        <!-- Form Errors -->
+        {% if form.errors %}
+            <ul class="errors">
+                {% for error in form.errors %}
+                    <li>El campo {{ error }} es requerido.</li>
+                {% endfor %}
+            </ul>
+        {% endif %}
+
+        <!-- Display Form -->
+        <div class="container">
+            <div class="row">
+                <form class="col s12" method="POST">
+                    {% csrf_token %}
+                    {% for field in form %}
+                        <div class="input-field col s12">
+                                <label class="active">{{ field.label }}</label>
+                                {{ field }}
+                        </div>
+                    {% endfor %}
+                    <button class="btn waves-effect waves-light" type="submit" name="save_product_info">Save
+                        <i class="material-icons right">send</i>
+                      </button>
+                </form>
+            </div>
+        </div>
+    {% endif %}
 
     {% if specs %}
     <ul>
@@ -14,13 +38,22 @@
           </li>
         {% endfor %}
       </ul>
-    {% endif %}  
-    <form method="POST"> {% csrf_token %}
-        {{specsForm.as_p}}
-        <input type="submit" value="add"  name="save_product_specs">
-    </form>      
+    {% endif %} 
+    <div class="container">
+        <div class="row">
+            <form class="col s12" method="POST"> {% csrf_token %}
+                {% for field in specsForm %}
+                    <div class="input-field col s4">
+                            <label class="active">{{ field.label }}</label>
+                            {{ field }}
+                    </div>
+                {% endfor %}
+                <div class="input-field col s4">
+                    <button class="btn waves-effect waves-light" type="submit" name="save_product_specs">Add
+                        <i class="material-icons right">send</i>
+                      </button>
+                </div>
+            </form>     
+        </div>
+    </div> 
 {% endblock %}
-
-   
-
-{}

@@ -1,25 +1,110 @@
 <!DOCTYPE html>
 <html lang="es">
+    
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
+        
+        {% load static %}
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+        <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+         <!-- Compiled and minified CSS -->
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+        <!-- Compiled and minified JavaScript -->
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+        
         <title>Tiendas distribuidas</title>
     </head>
     <body>
-        <h1>Inicio</h1>
-        <p>Desde aqui puedes hacer todas tus compras</p>
-
-        {% if messages %}
-        <ul class="messages">
-            {% for message in messages %}
-            <li  {% if message.tags %} class=" {{ message.tags }} " {% endif %}> {{ message }} </li>
-            {% endfor %}
-        </ul>
-        {% endif %}
+        <nav>
+            <div class="nav-wrapper">
+              <a href="#" class="brand-logo">Logo</a>
+              <ul id="nav-mobile" class="right hide-on-med-and-down">
+                <li><a href="sass.html">Sass</a></li>
+                <li><a href="badges.html">Components</a></li>
+                <li><a href="collapsible.html">JavaScript</a></li>
+              </ul>
+            </div>
+          </nav>
+        <div class="container">
+            <div class="row">
+                <div class="col s12">
+                    <h1>Inicio</h1>
+                    <p>Desde aqui puedes hacer todas tus compras</p>
+                </div>
+            </div>
+        </div>
 
         {% block content %}
 
         {% endblock %}
 
+        
+        <footer class="page-footer">
+            <div class="container">
+              <div class="row">
+                <div class="col l6 s12">
+                  <h5 class="white-text">Footer Content</h5>
+                  <p class="grey-text text-lighten-4">You can use rows and columns here to organize your footer content.</p>
+                </div>
+                <div class="col l4 offset-l2 s12">
+                  <h5 class="white-text">Links</h5>
+                  <ul>
+                    <li><a class="grey-text text-lighten-3" href="#!">Link 1</a></li>
+                    <li><a class="grey-text text-lighten-3" href="#!">Link 2</a></li>
+                    <li><a class="grey-text text-lighten-3" href="#!">Link 3</a></li>
+                    <li><a class="grey-text text-lighten-3" href="#!">Link 4</a></li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+            <div class="footer-copyright">
+              <div class="container">
+              © 2014 Copyright Text
+              <a class="grey-text text-lighten-4 right" href="#!">More Links</a>
+              </div>
+            </div>
+          </footer>
+
     </body>
+    <!--  Scripts-->
+    <script  type="text/javascript">
+        $(document).ready(function(){
+            $('select').formSelect();
+            $('select[required]').css({
+                display: 'inline',
+                position: 'absolute',
+                float: 'left',
+                padding: 0,
+                margin: 0,
+                border: '1px solid rgba(255,255,255,0)',
+                height: 0, 
+                width: 0,
+                top: '3em',
+                left: '7.5em',
+                opacity: 0
+              });
+            $("textarea").addClass("materialize-textarea");
+        });
+        {% if messages %}
+            {% for message in messages %}
+                $(document).ready(function(){
+                    const Message = '{{message}}';
+                    {% if message.tags == 'success' %}
+                        const $icon = '<i class="material-icons print">check</i>';
+                        const $class = 'light-green';
+                    {%elif message.tags == 'error' %}
+                        const $icon = '<i class="material-icons print">error</i>';
+                        const $class = 'red';
+                    {%else%}
+                        const $class = '';
+                        const $icon = '';
+                    {% endif %}
+                    
+                    const $toast = Message + $icon ;
+                    M.toast({html: $toast, classes: $class})
+                });
+            {% endfor %}
+        {% endif %}
+    </script>
 </html>

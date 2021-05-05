@@ -1,19 +1,15 @@
 {% extends 'base.html' %}
-{% load static %}
-
-<link rel="stylesheet" type="text/css" href="{% static 'products_catalog/style.css' %}">
-
 {% block content %}
-{% if object %}
-  <ul>
-    {% for product in object %}
-      <li>
-        {{ product.id }} <a href="{{ product.id }}">{{ product.name }}</a> ({{product.brand.name}})
-      </li>
-    {% endfor %}
-  </ul>
-  {% else %}
-    <p>There are no products in the catalog.</p>
+  {% if object %}
+    <ul>
+      {% for product in object %}
+        <li>
+          <a href="{{ product.id }}">{{ product.name }}</a> ({{product.brand.name}}) <a href="{{product.id}}/delete">delete</a>
+        </li>
+      {% endfor %}
+    </ul>
+    {% else %}
+      <p>There are no products in the catalog.</p>
   {% endif %}
             
 {% endblock %}

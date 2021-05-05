@@ -19,6 +19,10 @@ def product_create_view(request):
         form.save()
         messages.success(request, 'Se creó exitosamente el producto: ' + request.POST['name'])
         form = ProductForm()
+    else:
+        print(form.errors)
+        for error in form.non_field_errors():
+            messages.error(request, error)
 
     context = {
         'form': form
@@ -37,6 +41,9 @@ def product_update_view(request, id):
             if form.is_valid():
                 form.save()
                 messages.success(request, 'El producto se actualizó exitosamente')
+            else:
+                messages.error(request, form.errors)
+
         if 'save_product_specs' in request.POST:
             specs_form = ProductSpecsForm(request.POST or None)
             if specs_form.is_valid():

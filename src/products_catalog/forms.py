@@ -4,6 +4,7 @@ from django.forms import fields
 from .models import Category, Product, Brand, ProductSpecs
 
 class ProductForm(forms.ModelForm):
+        
     class Meta:
         model = Product
         fields = [
