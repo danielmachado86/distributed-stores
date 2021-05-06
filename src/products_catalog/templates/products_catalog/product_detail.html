@@ -1,15 +1,54 @@
 {% extends 'base.html' %}
+
 {% block content %}
-  {% if object %}
+    {% if object %}
+        
+        <div class="container">
+            <div class="row">
+                <div class="col s12 m8 offset-m2 l6 offset-l3">
+                    <div class="row valign-wrapper">
+                        <div class="col s2">
+                            <img src="{{ object.picture }}" alt=""> <!-- notice the "circle" class -->
+                        </div>
+                        <div class="col s10">
+                            <h4>{{ object.name }} </h4>
+                            <h5>{{ object.brand }} </h5>
+                        </div>
+                    </div>
+                </div>
+                <div class="col s12">
+                    
+                    <p>{{ object.category }}</p>
+                    <p>Descripción: {{ object.description }}</p>
+                </div>
+            </div>
+        </div>
+    {% endif %}
+
+    {% if specs %}
     <ul>
-      {% for product in object %}
-        <li>
-          <a href="{{ product.id }}">{{ product.name }}</a> ({{product.brand.name}}) <a href="{{product.id}}/delete">delete</a>
-        </li>
-      {% endfor %}
-    </ul>
-    {% else %}
-      <p>There are no products in the catalog.</p>
-  {% endif %}
-            
+        {% for spec in specs %}
+          <li>
+            {{ spec.attribute }} {{spec.value}} <a href="specs/{{spec.attribute}}/delete">delete</a>
+          </li>
+        {% endfor %}
+      </ul>
+    {% endif %} 
+    <div class="container">
+        <div class="row">
+            <form class="col s12" method="POST"> {% csrf_token %}
+                {% for field in specsForm %}
+                    <div class="input-field col s4">
+                            <label class="active">{{ field.label }}</label>
+                            {{ field }}
+                    </div>
+                {% endfor %}
+                <div class="input-field col s4">
+                    <button class="btn waves-effect waves-light" type="submit" name="save_product_specs">Add
+                        <i class="material-icons right">send</i>
+                      </button>
+                </div>
+            </form>     
+        </div>
+    </div> 
 {% endblock %}

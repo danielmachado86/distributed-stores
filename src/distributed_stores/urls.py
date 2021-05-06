@@ -16,24 +16,25 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path
 
-from products_catalog.views import (brand_create_view, brand_delete_view, 
-    brand_detail_view, brand_update_view, category_create_view, category_delete_view, 
-    category_detail_view, category_update_view, product_create_view, product_update_view, 
+from products_catalog.views import (brand_add_view, brand_delete_view, 
+    brand_list_view, brand_edit_view, category_add_view, category_delete_view, 
+    category_list_view, category_edit_view, product_add_view, product_detail_view, product_edit_view, 
     product_list_view, product_delete_view, product_spec_delete_view)
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('products/', product_list_view, name='product-list'),
-    path('products/create/', product_create_view, name='product-create'),
-    path('products/<int:id>/', product_update_view, name='product-update'),
+    path('products/add/', product_add_view, name='product-add'),
+    path('products/<int:id>/', product_detail_view, name='product-detail'),
+    path('products/<int:id>/edit/', product_edit_view, name='product-edit'),
     path('products/<int:id>/delete/', product_delete_view, name='product-delete'),
     path('products/<int:product>/specs/<str:attribute>/delete/', product_spec_delete_view, name='product-spec-delete'),
-    path('brands/', brand_detail_view, name='brand-list'),
-    path('brands/create/', brand_create_view, name='brand-create'),
-    path('brands/<int:id>', brand_update_view, name='brand-update'),
+    path('brands/', brand_list_view, name='brand-list'),
+    path('brands/add/', brand_add_view, name='brand-add'),
+    path('brands/<int:id>/', brand_edit_view, name='brand-edit'),
     path('brands/<int:id>/delete/', brand_delete_view, name='brand-delete'),
-    path('categories/', category_detail_view, name='category-list'),
-    path('categories/create/', category_create_view, name='category-create'),
-    path('categories/<int:id>', category_update_view, name='category-update'),
+    path('categories/', category_list_view, name='category-list'),
+    path('categories/add/', category_add_view, name='category-add'),
+    path('categories/<int:id>/', category_edit_view, name='category-edit'),
     path('categories/<int:id>/delete/', category_delete_view, name='category-delete'),
 ]

@@ -10,27 +10,46 @@ def product_list_view(request):
     context = {
         'object': obj
     }
-    return render(request, 'products_catalog/product_detail.html', context)
+    return render(request, 'products_catalog/product_list.html', context)
 
 
-def product_create_view(request):
+def product_add_view(request):
     form = ProductForm(request.POST or None)
     if form.is_valid():
         form.save()
         messages.success(request, 'Se creó exitosamente el producto: ' + request.POST['name'])
         form = ProductForm()
     else:
-        print(form.errors)
         for error in form.non_field_errors():
             messages.error(request, error)
 
     context = {
         'form': form
     }
-    return render(request, 'products_catalog/product_create.html', context)
+    return render(request, 'products_catalog/product_add.html', context)
 
+def product_detail_view(request, id):
+    obj = Product.objects.get(id=id)
+    specs = ProductSpecs.objects.filter(product=obj.id)
+    specs_form = ProductSpecsForm()
+    if request.method == 'POST':
+        specs_form = ProductSpecsForm(request.POST or None)
+        if specs_form.is_valid():
+            specs = specs_form.save(commit=False)
+            specs.product = obj
+            specs.save()
+            messages.success(request, 'La especificación se añadio con exito')
+            print(specs)
+        return HttpResponseRedirect(request.path_info)
 
-def product_update_view(request, id):
+    context = {
+        'object': obj,
+        'specsForm': specs_form,
+        'specs': specs
+    }
+    return render(request, 'products_catalog/product_detail.html', context)
+
+def product_edit_view(request, id):
     obj = Product.objects.get(id=id)
     specs = ProductSpecs.objects.filter(product=obj.id)
     form = ProductForm(instance=obj)
@@ -39,10 +58,13 @@ def product_update_view(request, id):
         if 'save_product_info' in request.POST:
             form = ProductForm(request.POST or None, instance=obj)
             if form.is_valid():
+                print(form.is_valid())
                 form.save()
                 messages.success(request, 'El producto se actualizó exitosamente')
             else:
-                messages.error(request, form.errors)
+                print(form.errors)
+                for error in form.non_field_errors():
+                    messages.error(request, error)
 
         if 'save_product_specs' in request.POST:
             specs_form = ProductSpecsForm(request.POST or None)
@@ -51,14 +73,13 @@ def product_update_view(request, id):
                 specs.product = obj
                 specs.save()
                 messages.success(request, 'La especificación se añadio con exito')
-        return HttpResponseRedirect(request.path_info)
 
     context = {
         'form': form,
         'specsForm': specs_form,
         'specs': specs
     }
-    return render(request, 'products_catalog/product_update.html', context)
+    return render(request, 'products_catalog/product_edit.html', context)
 
 
 def product_delete_view(request, id):
@@ -85,15 +106,15 @@ def product_spec_delete_view(request, product, attribute):
     return render(request, 'products_catalog/product_spec_delete.html', context)
 
 
-def brand_detail_view(request):
+def brand_list_view(request):
     obj = Brand.objects.all()
     context = {
         'object': obj
     }
-    return render(request, 'products_catalog/brand_detail.html', context)
+    return render(request, 'products_catalog/brand_list.html', context)
 
 
-def brand_create_view(request):
+def brand_add_view(request):
     form = BrandForm(request.POST or None)
     if form.is_valid():
         form.save()
@@ -103,10 +124,10 @@ def brand_create_view(request):
     context = {
         'form': form
     }
-    return render(request, 'products_catalog/brand_create.html', context)
+    return render(request, 'products_catalog/brand_add.html', context)
 
 
-def brand_update_view(request, id):
+def brand_edit_view(request, id):
     obj = Brand.objects.get(id=id)
     form = BrandForm(request.POST or None, instance=obj)
     if form.is_valid():
@@ -115,7 +136,7 @@ def brand_update_view(request, id):
     context = {
         'form': form
     }
-    return render(request, 'products_catalog/brand_update.html', context)
+    return render(request, 'products_catalog/brand_edit.html', context)
 
 
 def brand_delete_view(request, id):
@@ -130,15 +151,15 @@ def brand_delete_view(request, id):
     return render(request, 'products_catalog/brand_delete.html', context)
 
 
-def category_detail_view(request):
+def category_list_view(request):
     obj = Category.objects.all()
     context = {
         'object': obj
     }
-    return render(request, 'products_catalog/category_detail.html', context)
+    return render(request, 'products_catalog/category_list.html', context)
 
 
-def category_create_view(request):
+def category_add_view(request):
     form = CategoryForm(request.POST or None)
     if form.is_valid():
         form.save()
@@ -148,10 +169,10 @@ def category_create_view(request):
     context = {
         'form': form
     }
-    return render(request, 'products_catalog/category_create.html', context)
+    return render(request, 'products_catalog/category_add.html', context)
 
 
-def category_update_view(request, id):
+def category_edit_view(request, id):
     obj = Category.objects.get(id=id)
     form = CategoryForm(request.POST or None, instance=obj)
     if form.is_valid():
@@ -160,7 +181,7 @@ def category_update_view(request, id):
     context = {
         'form': form
     }
-    return render(request, 'products_catalog/category_update.html', context)
+    return render(request, 'products_catalog/category_edit.html', context)
 
 
 def category_delete_view(request, id):

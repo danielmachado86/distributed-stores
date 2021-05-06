@@ -2,15 +2,6 @@
 
 {% block content %}
     {% if form %}
-        <!-- Form Errors -->
-        {% if form.errors %}
-            <ul class="errors">
-                {% for error in form.errors %}
-                    <li>El campo {{ error }} es requerido.</li>
-                {% endfor %}
-            </ul>
-        {% endif %}
-
         <!-- Display Form -->
         <div class="container">
             <div class="row">
@@ -19,7 +10,10 @@
                     {% for field in form %}
                         <div class="input-field col s12">
                                 <label class="active">{{ field.label }}</label>
-                                {{ field }}
+                                {{ field }} 
+                                {% if field.errors%}
+                                    <div class="helper-text red-text">{{ field.errors }}</div> 
+                                {% endif %}
                         </div>
                     {% endfor %}
                     <button class="btn waves-effect waves-light" type="submit" name="save_product_info">Save
