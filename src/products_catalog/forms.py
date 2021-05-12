@@ -24,14 +24,11 @@ class BrandForm(forms.ModelForm):
             'picture'
         ]
 
-class CategoryForm(forms.ModelForm):
+# class CategoryForm(forms.ModelForm):
     class Meta:
         model = Category
         fields = [
             'name',
-            'parent',
-            'description',
-            'picture'
         ]
 
 class ProductSpecsForm(forms.ModelForm):

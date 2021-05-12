@@ -1,5 +1,7 @@
 from django.db import models
 
+from treebeard.al_tree import AL_Node
+
 class Brand(models.Model):
     name = models.CharField(max_length=120, unique=True)
     description = models.TextField(blank=True, null=True)
@@ -9,17 +11,30 @@ class Brand(models.Model):
         return self.name
 
 
-class Category(models.Model):
-    name = models.CharField(max_length=120)
-    parent = models.CharField(max_length=120, blank=True, null=True)
-    description = models.TextField(blank=True, null=True)
-    picture = models.URLField(blank=True, null=True)
+class Category(AL_Node):
+    name = models.CharField(max_length=30)
+    parent = models.ForeignKey('self',
+                               related_name='children_set',
+                               null=True,
+                               db_index=True,
+                               on_delete=models.CASCADE)
+
+    node_order_by = ['name']
 
     def __str__(self):
-        return self.name
+        return 'Category: {}'.format(self.name)
 
-    class Meta:
-        unique_together = ('name', 'parent')
+# class Category(models.Model):
+#     name = models.CharField(max_length=120)
+#     parent = models.CharField(max_length=120, blank=True, null=True)
+#     description = models.TextField(blank=True, null=True)
+#     picture = models.URLField(blank=True, null=True)
+
+#     def __str__(self):
+#         return self.name
+
+#     class Meta:
+#         unique_together = ('name', 'parent')
 
 
 class Product(models.Model):

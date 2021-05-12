@@ -1,6 +1,6 @@
 from django.shortcuts import get_object_or_404, redirect, render
 from .models import Category, Product, Brand, ProductSpecs
-from .forms import CategoryForm, ProductForm, BrandForm, ProductSpecsForm
+from .forms import ProductForm, BrandForm, ProductSpecsForm
 from django.contrib import messages
 from django.http import HttpResponseRedirect
 
@@ -73,6 +73,9 @@ def product_edit_view(request, id):
                 specs.product = obj
                 specs.save()
                 messages.success(request, 'La especificación se añadio con exito')
+                
+        return HttpResponseRedirect(request.path_info)
+        
 
     context = {
         'form': form,
@@ -159,38 +162,38 @@ def category_list_view(request):
     return render(request, 'products_catalog/category_list.html', context)
 
 
-def category_add_view(request):
-    form = CategoryForm(request.POST or None)
-    if form.is_valid():
-        form.save()
-        messages.success(request, 'Se creó exitosamente la categoria: ' + request.POST['name'])
-        form = CategoryForm()
+# def category_add_view(request):
+#     form = CategoryForm(request.POST or None)
+#     if form.is_valid():
+#         form.save()
+#         messages.success(request, 'Se creó exitosamente la categoria: ' + request.POST['name'])
+#         form = CategoryForm()
 
-    context = {
-        'form': form
-    }
-    return render(request, 'products_catalog/category_add.html', context)
-
-
-def category_edit_view(request, id):
-    obj = Category.objects.get(id=id)
-    form = CategoryForm(request.POST or None, instance=obj)
-    if form.is_valid():
-        form.save()
-        messages.success(request, 'La categoria se actualizó exitosamente')
-    context = {
-        'form': form
-    }
-    return render(request, 'products_catalog/category_edit.html', context)
+#     context = {
+#         'form': form
+#     }
+#     return render(request, 'products_catalog/category_add.html', context)
 
 
-def category_delete_view(request, id):
-    obj = get_object_or_404(Category, id=id)
-    if request.method == 'POST':
-        obj.delete()
-        messages.success(request, 'Se eliminó exitosamente la categoria: ' + obj.name)
-        return redirect('../../')
-    context = {
-        'object': obj
-    }
-    return render(request, 'products_catalog/category_delete.html', context)
+# def category_edit_view(request, id):
+#     obj = Category.objects.get(id=id)
+#     form = CategoryForm(request.POST or None, instance=obj)
+#     if form.is_valid():
+#         form.save()
+#         messages.success(request, 'La categoria se actualizó exitosamente')
+#     context = {
+#         'form': form
+#     }
+#     return render(request, 'products_catalog/category_edit.html', context)
+
+
+# def category_delete_view(request, id):
+#     obj = get_object_or_404(Category, id=id)
+#     if request.method == 'POST':
+#         obj.delete()
+#         messages.success(request, 'Se eliminó exitosamente la categoria: ' + obj.name)
+#         return redirect('../../')
+#     context = {
+#         'object': obj
+#     }
+#     return render(request, 'products_catalog/category_delete.html', context)
