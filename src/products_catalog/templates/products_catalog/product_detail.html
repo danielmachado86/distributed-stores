@@ -1,15 +1,25 @@
 {% extends 'base.html' %}
 
 {% block content %}
-    <div class="row"></div>
+    
     {% if object %}
+    <nav>
+        <div class="nav-wrapper">
+            <div class="col s12">
+                {% for category in categories%}
+                    <a href="/products?category={{category.name}}" class="breadcrumb">{{category.name}}</a>
+                {% endfor %}
+            </div>
+        </div>
+    </nav>
+    <div class="row"></div>
     <div class="row">
         <div class="col s12">
             <div class="right-align col s6 m6 l6 offset-s3">
                 <img class="responsive-img" src="{{ object.picture }}" alt="">
             </div>
             <div class="left-align col s9 m4 l4 offset-s3">
-                <h5>{{ object.name }} </h5>
+                <h5>{{ object.name }}</h5><a href="edit">edit</a>
                 <h6>{{ object.brand }} </h6>  
             </div>
             <div class="col s9 m9 l9 offset-s3">
@@ -22,14 +32,21 @@
 
     <div class="row">
         <div class="col s12">
+            <h6>Especificaciones</h6><a href="specs/edit">edit</a>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col s12">
             {% if specs %}
             <ul>
                 {% for spec in specs %}
                   <li>
-                    {{ spec.attribute }} {{spec.value}} <a href="specs/{{spec.attribute}}/delete">delete</a>
+                    {{ spec.attribute }} {{spec.value}}
                   </li>
                 {% endfor %}
               </ul>
+            {% else %}
+                <p>No hay especificaciones.</p>
             {% endif %} 
         </div>
     </div>

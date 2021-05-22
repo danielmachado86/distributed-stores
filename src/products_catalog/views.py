@@ -1,6 +1,6 @@
 from django.shortcuts import get_object_or_404, redirect, render
 from .models import Category, Product, Brand, ProductSpecs
-from .forms import ProductForm, BrandForm, ProductSpecsForm
+from .forms import ProductForm, BrandForm, ProductSpecsForm, CategoryForm
 from django.contrib import messages
 from django.http import HttpResponseRedirect
 
@@ -30,22 +30,27 @@ def product_add_view(request):
 
 def product_detail_view(request, id):
     obj = Product.objects.get(id=id)
+    category = obj.category
+    categories = category.get_ancestors()
+    categories.append(category)
     specs = ProductSpecs.objects.filter(product=obj.id)
     specs_form = ProductSpecsForm()
-    if request.method == 'POST':
-        specs_form = ProductSpecsForm(request.POST or None)
-        if specs_form.is_valid():
-            specs = specs_form.save(commit=False)
-            specs.product = obj
-            specs.save()
-            messages.success(request, 'La especificación se añadio con exito')
-            print(specs)
-        return HttpResponseRedirect(request.path_info)
+    # if request.method == 'POST':
+    #     specs_form = ProductSpecsForm(request.POST or None)
+    #     if specs_form.is_valid():
+    #         specs = specs_form.save(commit=False)
+    #         specs.product = obj
+    #         specs.save()
+    #         messages.success(request, 'La especificación se añadio con exito')
+    #         print(specs)
+    #     print(request.path_info)
+    #     return HttpResponseRedirect(request.path_info)
 
     context = {
         'object': obj,
         'specsForm': specs_form,
-        'specs': specs
+        'specs': specs,
+        'categories': categories
     }
     return render(request, 'products_catalog/product_detail.html', context)
 
@@ -96,13 +101,36 @@ def product_delete_view(request, id):
     }
     return render(request, 'products_catalog/product_delete.html', context)
 
-def product_spec_delete_view(request, product, attribute):
-    queryset = ProductSpecs.objects.filter(product=product)
+
+def product_specs_edit_view(request, id):
+    obj = Product.objects.get(id=id)
+    specs = ProductSpecs.objects.filter(product=obj.id)
+    specs_form = ProductSpecsForm()
+    if request.method == 'POST':
+        specs_form = ProductSpecsForm(request.POST or None)
+        if specs_form.is_valid():
+            specs = specs_form.save(commit=False)
+            specs.product = obj
+            specs.save()
+            messages.success(request, 'La especificación se añadio con exito')
+                
+        return HttpResponseRedirect(request.path_info)
+        
+
+    context = {
+        'specsForm': specs_form,
+        'specs': specs
+    }
+    return render(request, 'products_catalog/product_specs_edit.html', context)
+
+
+def product_spec_delete_view(request, id, attribute):
+    queryset = ProductSpecs.objects.filter(product=id)
     obj = get_object_or_404(queryset, attribute=attribute)
     if request.method == 'POST':
         obj.delete()
         messages.success(request, 'Se eliminó exitosamente la especificacion: ' + obj.attribute)
-        return redirect('../../../')
+        return redirect('../../edit')
     context = {
         'object': obj
     }
@@ -162,17 +190,22 @@ def category_list_view(request):
     return render(request, 'products_catalog/category_list.html', context)
 
 
-# def category_add_view(request):
-#     form = CategoryForm(request.POST or None)
-#     if form.is_valid():
-#         form.save()
-#         messages.success(request, 'Se creó exitosamente la categoria: ' + request.POST['name'])
-#         form = CategoryForm()
+def category_add_view(request):
+    form = CategoryForm(request.POST or None)
+    if form.is_valid():
+        print(form.cleaned_data['parent'])
+        if form.cleaned_data['parent']:
+            get = lambda node_id: Category.objects.get(pk=node_id)
+            node = get(form.cleaned_data['parent'].pk).add_child(name=form.cleaned_data['name'])
+        else:
+            Category.add_root(name=form.cleaned_data['name'])
+        messages.success(request, 'Se creó exitosamente la categoria: ' + request.POST['name'])
+        form = CategoryForm()
 
-#     context = {
-#         'form': form
-#     }
-#     return render(request, 'products_catalog/category_add.html', context)
+    context = {
+        'form': form
+    }
+    return render(request, 'products_catalog/category_add.html', context)
 
 
 # def category_edit_view(request, id):

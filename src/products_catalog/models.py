@@ -16,6 +16,7 @@ class Category(AL_Node):
     parent = models.ForeignKey('self',
                                related_name='children_set',
                                null=True,
+                               blank=True,
                                db_index=True,
                                on_delete=models.CASCADE)
 

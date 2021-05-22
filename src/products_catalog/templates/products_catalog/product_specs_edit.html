@@ -1,0 +1,30 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <div class="container">
+        <div class="row">
+            {% if specs %}
+                <ul>
+                    {% for spec in specs %}
+                        <li>
+                            {{ spec.attribute }} {{spec.value}} <a href="../../specs/{{spec.attribute}}/delete">delete</a>
+                        </li>
+                    {% endfor %}
+                </ul>
+            {% endif %} 
+            <form class="col s12" method="POST"> {% csrf_token %}
+                {% for field in specsForm %}
+                    <div class="input-field col s4">
+                            <label class="active">{{ field.label }}</label>
+                            {{ field }}
+                    </div>
+                {% endfor %}
+                <div class="input-field col s4">
+                    <button class="btn waves-effect waves-light" type="submit" name="save_product_specs">Add
+                        <i class="material-icons right">send</i>
+                    </button>
+                </div>
+            </form>     
+        </div>
+    </div> 
+{% endblock %}
