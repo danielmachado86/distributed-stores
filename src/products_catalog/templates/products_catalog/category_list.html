@@ -2,15 +2,31 @@
 
 {% block content %}
 {% if object %}
-  <ul>
-    {% for category in object %}
-      <li>
-        {{ category.name }} ({{category.parent}})
-      </li>
-    {% endfor %}
-  </ul>
-  {% else %}
-    <p>There are no categories in the catalog.</p>
-  {% endif %}
-            
+    <a href="./add" class="black-text">Add<i class="material-icons">add</i></a>
+
+    <table class="highlight">
+        <caption>Categorias creadas en el catalogo</caption>
+        <thead>
+            <tr>
+                <th scope="col">Nombre</th>
+                <th scope="col">Parent</th>
+                <th scope="col">Editar</th>
+                <th scope="col">Eliminar</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for category in object %}
+                <tr>
+                <th scope="row"><a href="{{ category.id }}">{{ category.name }}</a></th>
+                <td>{{ category.parent }}</td>
+                <td><a href="{{category.id}}/edit"><i class="material-icons print">edit</i></a></td>
+                <td><a href="{{category.id}}/delete"><i class="material-icons print">delete</i></a></td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    {% else %}
+        <p>There are no categories in the catalog.</p>
+    {% endif %}
 {% endblock %}

@@ -1,14 +1,30 @@
 {% extends 'base.html' %}
 
 {% block content %}
+<a href="./add" class="black-text">Add<i class="material-icons">add</i></a>
 {% if object %}
-  <ul>
-    {% for brand in object %}
-      <li>
-        {{ brand.name }}
-      </li>
-    {% endfor %}
-  </ul>
+    <table class="highlight">
+        <caption>Marcas creadas en el catalogo</caption>
+        <thead>
+            <tr>
+                <th scope="col">Nombre</th>
+                <th scope="col">Descripción</th>
+                <th scope="col">Editar</th>
+                <th scope="col">Eliminar</th>
+            </tr>
+        </thead>
+
+        <tbody>
+            {% for brand in object %}
+                <tr>
+                <th scope="row"><a href="{{ brand.id }}">{{ brand.name }}</a></th>
+                <td>{{ brand.description }}</td>
+                <td><a href="{{brand.id}}/edit"><i class="material-icons print">edit</i></a></td>
+                <td><a href="{{brand.id}}/delete"><i class="material-icons print">delete</i></a></td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
   {% else %}
     <p>There are no brands in the catalog.</p>
   {% endif %}

@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    
+    {% if object %}
+    <div class="row"></div>
+    <div class="row">
+        <div class="col s12">
+            <div class="right-align col s6 m6 l6 offset-s3">
+                <img class="responsive-img" src="{{ object.picture }}" alt="">
+            </div>
+            <div class="left-align col s9 m4 l4 offset-s3">
+                <h5>{{ object.name }}</h5><a href="edit">edit</a>
+            </div>
+            <div class="col s9 m9 l9 offset-s3">
+                <p>Descripción: {{ object.description }}</p>
+            </div>
+        </div>
+    </div>
+    {% endif %}
+{% endblock %}

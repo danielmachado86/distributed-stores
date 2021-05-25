@@ -35,16 +35,6 @@ def product_detail_view(request, id):
     categories.append(category)
     specs = ProductSpecs.objects.filter(product=obj.id)
     specs_form = ProductSpecsForm()
-    # if request.method == 'POST':
-    #     specs_form = ProductSpecsForm(request.POST or None)
-    #     if specs_form.is_valid():
-    #         specs = specs_form.save(commit=False)
-    #         specs.product = obj
-    #         specs.save()
-    #         messages.success(request, 'La especificación se añadio con exito')
-    #         print(specs)
-    #     print(request.path_info)
-    #     return HttpResponseRedirect(request.path_info)
 
     context = {
         'object': obj,
@@ -60,24 +50,15 @@ def product_edit_view(request, id):
     form = ProductForm(instance=obj)
     specs_form = ProductSpecsForm()
     if request.method == 'POST':
-        if 'save_product_info' in request.POST:
-            form = ProductForm(request.POST or None, instance=obj)
-            if form.is_valid():
-                print(form.is_valid())
-                form.save()
-                messages.success(request, 'El producto se actualizó exitosamente')
-            else:
-                print(form.errors)
-                for error in form.non_field_errors():
-                    messages.error(request, error)
-
-        if 'save_product_specs' in request.POST:
-            specs_form = ProductSpecsForm(request.POST or None)
-            if specs_form.is_valid():
-                specs = specs_form.save(commit=False)
-                specs.product = obj
-                specs.save()
-                messages.success(request, 'La especificación se añadio con exito')
+        form = ProductForm(request.POST or None, instance=obj)
+        if form.is_valid():
+            print(form.is_valid())
+            form.save()
+            messages.success(request, 'El producto se actualizó exitosamente')
+        else:
+            print(form.errors)
+            for error in form.non_field_errors():
+                messages.error(request, error)
                 
         return HttpResponseRedirect(request.path_info)
         
@@ -158,6 +139,15 @@ def brand_add_view(request):
     return render(request, 'products_catalog/brand_add.html', context)
 
 
+def brand_detail_view(request, id):
+    obj = Brand.objects.get(id=id)
+
+    context = {
+        'object': obj,
+    }
+    return render(request, 'products_catalog/brand_detail.html', context)
+
+
 def brand_edit_view(request, id):
     obj = Brand.objects.get(id=id)
     form = BrandForm(request.POST or None, instance=obj)
@@ -208,25 +198,25 @@ def category_add_view(request):
     return render(request, 'products_catalog/category_add.html', context)
 
 
-# def category_edit_view(request, id):
-#     obj = Category.objects.get(id=id)
-#     form = CategoryForm(request.POST or None, instance=obj)
-#     if form.is_valid():
-#         form.save()
-#         messages.success(request, 'La categoria se actualizó exitosamente')
-#     context = {
-#         'form': form
-#     }
-#     return render(request, 'products_catalog/category_edit.html', context)
+def category_edit_view(request, id):
+    obj = Category.objects.get(id=id)
+    form = CategoryForm(request.POST or None, instance=obj)
+    if form.is_valid():
+        form.save()
+        messages.success(request, 'La categoria se actualizó exitosamente')
+    context = {
+        'form': form
+    }
+    return render(request, 'products_catalog/category_edit.html', context)
 
 
-# def category_delete_view(request, id):
-#     obj = get_object_or_404(Category, id=id)
-#     if request.method == 'POST':
-#         obj.delete()
-#         messages.success(request, 'Se eliminó exitosamente la categoria: ' + obj.name)
-#         return redirect('../../')
-#     context = {
-#         'object': obj
-#     }
-#     return render(request, 'products_catalog/category_delete.html', context)
+def category_delete_view(request, id):
+    obj = get_object_or_404(Category, id=id)
+    if request.method == 'POST':
+        obj.delete()
+        messages.success(request, 'Se eliminó exitosamente la categoria: ' + obj.name)
+        return redirect('../../')
+    context = {
+        'object': obj
+    }
+    return render(request, 'products_catalog/category_delete.html', context)
